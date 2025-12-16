@@ -13,7 +13,8 @@ import (
 )
 
 const (
-	MAX_FILE_SIZE = 10000 // Bits
+	// MAX_FILE_SIZE = 1000 * 1000 * 1000 * 1 // 1 Mb
+	MAX_FILE_SIZE = 1000 * 10
 	BAUD_RATE     = 115200
 	SYNC_INTERVAL = 10 * time.Second
 	STORAGE_DIR   = "/media/james/usb_ssd"
@@ -28,7 +29,7 @@ var fw FileWatcher = FileWatcher{
 }
 
 func createFileName(fileName string) string {
-	return fmt.Sprintf("%s/%s_%d.log", STORAGE_DIR, fileName, time.Now().UTC().UnixNano())
+	return fmt.Sprintf("%s/%s_%s.log", STORAGE_DIR, fileName, time.Now().UTC().Format("2006-01-02_15-04-05"))
 }
 
 func logSerialData(port string, logfileName string) {

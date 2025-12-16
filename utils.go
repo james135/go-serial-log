@@ -49,8 +49,6 @@ func UploadFiles() error {
 
 		fileName := entry.Name()
 
-		fmt.Printf("--- %s ---\n", fileName)
-
 		if entry.IsDir() {
 			continue
 		}
@@ -60,7 +58,6 @@ func UploadFiles() error {
 		fileIsOpen := fw.CheckFileIsOpen(path)
 
 		if fileIsOpen {
-			fmt.Printf("warning - %s is still open\n", fileName)
 			continue
 		}
 

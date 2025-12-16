@@ -1,0 +1,210 @@
+�
+Little Theo Mk3
+===============
+
+[info]    Firmware Version: dev-master-st-merge
+[info]    Build: 2024-02-28T17:42:50Z
+[info]    Board Type: 0
+[info]    Bootloader: v4.2
+[info]    stm32-rtc: Initialized (2025-12-16 13:32:47)
+[info]    stm32-rtc: Alarm disabled
+[info]    stm32-rtc: Alarm A set (0xc0808080)
+[info]    stm32-rng: Hardware RNG initialized
+[info]    spi1: SPI bus controller initialized
+[info]    i2c2: I2C bus controller initialized
+[info]    i2c3: I2C bus controller initialized
+[info]    gpio-aux [i2c2-86]: PI4IOE5V6408 Detected
+[info]    stc3100 [i2c3-e0]: STC3100 Detected
+[detail]  stc3100 [i2c3-e0]: Reading REG_MODE = 14
+[info]    stc3100 [i2c3-e0]: Setting resolution to 14 bps
+[detail]  stc3100 [i2c3-e0]: Writing REG_MODE = 10
+[detail]  stc3100 [i2c3-e0]: Verifying REG_MODE = 10
+[info]    stc3100 [i2c3-e0]: Initialised
+[info]    stc3100 [i2c3-e0]:    State-of-charge: 96.0%
+[info]    stc3100 [i2c3-e0]:    Voltage:         4.074V
+[info]    stc3100 [i2c3-e0]:    Current:         -3.0mA
+[detail]  stc3100 [i2c3-e0]: MODE: 10, CTRL: 0c
+[info]    nor-flash [spi1]: Found Macronix MX25U6432F (8192KB)
+[info]    nor-flash [stm32]: Initialised
+[info]    bsp-fs: Filesystem mounted on nor-flash [spi1]
+[info]    lsm6dsl [i2c2-d4]: LSM6DSL Detected
+[info]    lsm6dsl [i2c2-d4]: Running
+[info]    Wake Source: None
+[info]    System initialized
+[info]    MainFW details:
+[info]      Metadata valid
+[info]      Version: dev-fnol-detection-params
+[info]      Manufacturer: ST
+[info]    bsp-fs: Filesystem listing:
+  reg   96B activation.dat
+  reg  576B credentials.json
+  reg 512KB fallback.fpk
+  dir    0B fnol
+  reg   16B gyro.dat
+  reg   12B logger-metadata
+  reg  337B settings.json
+  reg  160B syslog.bin
+  dir    0B tripC
+  dir    0B trip
+  reg    0B    1747642589T40
+  reg    0B    1749731344T104
+  reg    0B    1751893923T133
+[info]    Checking for firmware upload...
+[info]    Checking for updates...
+[info]    Checking for application...
+[info]    Application firmware found
+[info]    Running application
+[info]    bsp-fs: Unmounting filesystem
+
+Little Theo Mk3
+===============
+
+[info]    Firmware Version: dev-fnol-detection-params
+[info]    Build: 2025-10-22T11:29:00Z
+[info]    Board Type: 0
+[info]    Bootloader: v4.2
+[info]    stm32-rtc: Initialized (2025-12-16 13:32:51)
+[info]    stm32-rtc: Alarm disabled
+[info]    stm32-rtc: Alarm A set (0xc0808080)
+[info]    stm32-rng: Hardware RNG initialized
+[info]    spi1: SPI bus controller initialized
+[info]    i2c2: I2C bus controller initialized
+[info]    i2c3: I2C bus controller initialized
+[info]    gpio-aux [i2c2-86]: PI4IOE5V6408 Detected
+[info]    stc3100: STC3100 Detected
+[detail]  stc3100: Reading REG_MODE = 10
+[info]    stc3100: Setting resolution to 12 bps
+[detail]  stc3100: Writing REG_MODE = 14
+[detail]  stc3100: Verifying REG_MODE = 14
+[info]    stc3100: Initialised
+[info]    stc3100:    State-of-charge: 95.6%
+[info]    stc3100:    Voltage:         4.072V
+[info]    stc3100:    Current:         -10.0mA
+[detail]  stc3100: MODE: 14, CTRL: 0c
+[info]    nor-flash [spi1]: Found Macronix MX25U6432F (8192KB)
+[info]    nor-flash [stm32]: Initialised
+[info]    bsp-fs: Filesystem mounted on nor-flash [spi1]
+[info]    lsm6dsl [i2c2-d4]: LSM6DSL Detected
+[info]    lsm6dsl [i2c2-d4]: Running
+[info]    Wake Source: IMU
+[info]    System initialized
+[info]    app-settings: Loading settings
+[warning] app-settings: Document validated
+[info]    app-settings:   tx-data-types            3
+[info]    app-settings:   reporter-qos             1
+[info]    app-settings:   bfnol-speed              5
+[info]    app-settings:   bfnol-force              2.5
+[info]    app-settings:   enabled-algorithms       1
+[info]    app-settings:   fnol-modg-red            0.6
+[info]    app-settings:   fnol-modg                0.7
+[info]    app-settings:   fnol-lowg                0
+[info]    app-settings:   fnol-deltav              0.4
+[info]    app-settings:   fnol-gradient            18
+[info]    app-settings:   debug                    true
+[info]    app-settings:   battery-low-threshold    30
+[info]    app-settings:   trip-timeout             600
+[info]    app-settings:   heartbeat-interval       24
+[info]    app-settings:   daily-upload-time        10
+[info]    app-settings:   after-trip-reports       false
+[info]    Starting wd service
+[info]    net: Initializing TCP/IP stack
+[info]    tls-client: Library initialized
+[info]    app-credentials: Loading credentials
+[info]    Starting logger service
+[info]    app-logger: Loaded metadata
+[info]    app-logger: Initialized
+[info]    Starting report service
+[info]    app-activation: Loading activation record
+[info]    app-activation:    delta-x: 0.001
+[info]    app-activation:    delta-y: -0.642
+[info]    app-activation:    delta-z: 0.645
+[info]    Starting led service
+[info]    Starting gps service
+[info]    app-gps: Acquisition task started
+[info]    bsp-power: Enabling GPS module power
+[info]    app-gps: Waking GPS module
+[info]    app-gps: Initialising GPS module
+[error]   app-gps: Invalid GNSS string: [GNS] Err -22
+[warning] app-gps: Couldn't set GNSS constellations but not critical
+[info]    app-gps: Starting acquisition
+[info]    app-fnol-detect: Original FNOL Enabled
+[info]    Press the U key within 3 seconds to check for updates
+[info]    Press the H key within 3 seconds to send a heartbeat
+[info]    app-logger: Starting trip /trip/1765891977T286c
+[info]    app-logger: 2025-12-16 13:32:57 :: 600 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:32:58 :: 599 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:32:59 :: 598 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:00 :: 597 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:01 :: 596 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:02 :: 595 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:03 :: 594 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:04 :: 593 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:05 :: 592 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:06 :: 591 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:07 :: 590 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:08 :: 589 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:09 :: 588 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:10 :: 587 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:11 :: 586 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:12 :: 585 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:13 :: 584 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:14 :: 583 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:15 :: 582 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:16 :: 581 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:17 :: 580 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:18 :: 579 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:19 :: 578 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:20 :: 577 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:21 :: 576 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:22 :: 575 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:23 :: 574 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:24 :: 573 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:25 :: 572 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:26 :: 571 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:27 :: 570 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:28 :: 569 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:29 :: 568 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:30 :: 567 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:31 :: 566 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:32 :: 565 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:33 :: 564 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:34 :: 563 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:35 :: 562 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:36 :: 561 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:37 :: 560 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:38 :: 559 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:39 :: 558 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:40 :: 557 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:41 :: 556 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:42 :: 555 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:43 :: 554 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:44 :: 553 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:45 :: 552 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:46 :: 551 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:47 :: 550 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:48 :: 549 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:49 :: 548 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:50 :: 547 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:51 :: 546 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:52 :: 545 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:53 :: 544 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:54 :: 543 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:55 :: 542 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:56 :: 541 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:57 :: 540 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:58 :: 539 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:33:59 :: 538 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:00 :: 537 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:01 :: 536 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:02 :: 535 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:03 :: 534 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:04 :: 533 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:05 :: 532 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:06 :: 531 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:07 :: 530 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:08 :: 529 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:09 :: 528 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:10 :: 527 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:11 :: 526 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:12 :: 525 :: -0.021935' 51.531860' 0 knots N: 0
+[info]    app-logger: 2025-12-16 13:34:13 :: 524 :: -0.0

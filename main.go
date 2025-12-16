@@ -2,15 +2,17 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"os"
 	"time"
+	"unicode/utf8"
 
 	"github.com/tarm/serial"
 )
 
 const (
-	BAUD_RATE     = 1000
+	BAUD_RATE     = 115200
 	SYNC_INTERVAL = 120 * time.Second
 )
 
@@ -38,6 +40,11 @@ func logSerialData(port string, logfile string, exit chan string) {
 	lastSync := time.Now().UTC()
 	buffer := make([]byte, 256)
 
+	defer func() {
+		writer.Flush()
+		file.Sync() // optional but safer
+	}()
+
 	for {
 		n, err := ser.Read(buffer)
 		if err != nil {
@@ -49,8 +56,15 @@ func logSerialData(port string, logfile string, exit chan string) {
 		}
 
 		if n > 0 {
-			writer.Write(buffer[:n])
-			writer.Flush() // Flush immediately after writing
+			data := buffer[:n]
+
+			// Ensure valid UTF-8
+			if !utf8.Valid(data) {
+				data = bytes.ToValidUTF8(data, []byte("�"))
+			}
+
+			_, _ = writer.Write(data)
+			// writer.Flush()
 		}
 
 		if time.Since(lastSync) >= SYNC_INTERVAL {
@@ -64,21 +78,22 @@ func logSerialData(port string, logfile string, exit chan string) {
 
 func main() {
 
-	// argsWithoutProg := os.Args[1:]
-
-	// if len(argsWithoutProg) > 1 {
-	// 	path = argsWithoutProg[1]
-	// }
-
-	// fmt.Println(argsWithoutProg[0], path)
-
-	path := "serial_log.txt"
+	config := map[string]string{
+		"/dev/cu.usbserial-21240": "port_D",
+		"/dev/cu.usbserial-21260": "port_F",
+		"/dev/cu.usbserial-21270": "port_G",
+		"/dev/cu.usbserial-21250": "port_E",
+	}
 
 	exitChan := make(chan string)
 
+	for port, logName := range config {
+		go logSerialData(port, logName, exitChan)
+	}
+
 	// /dev/cu.usbserial-FT51P4YT
 	// /dev/ttyUSB0
-	go logSerialData("/dev/cu.usbserial-21240", path, exitChan)
+	// go logSerialData("/dev/cu.usbserial-21240", "serial_log.txt", exitChan)
 
 	for i := range exitChan {
 		fmt.Printf("%s has exited\n", i)

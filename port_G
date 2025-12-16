@@ -1,0 +1,273 @@
+
+Little Theo GD Bootloader
+=========================
+[info]    Bootloader: boot_production_lt2g_v4-1 (4.1)
+[info]    SPI0: SPI bus controller initialized
+[info]    I2C1: I2C bus controller initialized
+[info]    I2C2: I2C bus controller initialized
+[info]    I2C1: PI4IOE5V6408 Detected
+[info]    SPI0: Found EON EN25QH64A (8192KB)
+[info]    GD-FLASH: Initialised (2048KB)
+[info]    bsp-fs: Filesystem mounted on SPI0
+[info]    Wake Source: IMU
+[info]    System initialized
+[info]    MainFW details:
+[info]      Metadata valid
+[info]      Version: v5-9
+[info]      Manufacturer: GD
+[info]      BROF: Yes
+[info]    bsp-fs: Filesystem listing:
+  reg   18B ADC_CALIB
+  reg   96B activation.dat
+  reg  576B credentials.json
+  dir    0B fnol
+  reg 512KB gd-fallback.fpk
+  reg   16B gyro.dat
+  reg   12B logger-metadata
+  reg  554B settings.json
+  reg  272B syslog.bin
+  dir    0B tripC
+  dir    0B trip
+  reg    0B    1747724122T8
+  reg    0B    1748959268T49
+  reg    0B    1749732010T65
+  reg    0B    1751893927T95
+  reg    0B    1758014323T155
+  reg    0B    1758187903T160
+  reg    0B    1759424306T177
+  reg  37KB    1765891148_220
+[info]    Checking for firmware upload...
+[info]    Checking for updates...
+[info]    Checking for application...
+[info]    Application firmware found
+[info]    Running application
+[info]    bsp-fs: Unmounting filesystem
+
+Little Theo GD Logger
+=====================
+[info]    Firmware Version: v5-9
+[info]    Build: 2025-04-25T14:21:45Z
+[info]    Board Type: 3
+[info]    Bootloader:  (4.1)
+[info]    SPI0: SPI bus controller initialized
+[info]    I2C1: I2C bus controller initialized
+[info]    I2C1: PI4IOE5V6408 Detected
+[info]    SPI0: Found EON EN25QH64A (8192KB)
+[info]    GD-FLASH: Initialised (2048KB)
+[info]    bsp-fs: Filesystem mounted on SPI0
+[info]    RTC: Alarm disabled
+[info]    TRNG: Hardware RNG initialized
+[info]    GD-ADC: Initiated fuel gauge
+[info]    Fuel gauge initialised: 4.05V, 92%
+[info]    I2C1: LSM6DSL Detected
+[info]    I2C1: Running
+[info]    Wake Source: IMU
+[info]    System initialized
+[info]    app-settings: Loading settings
+[info]    app-settings: Document valid: Y
+[info]    app-settings:   enabled-algorithms       5
+[info]    app-settings:   backup-force             25
+[info]    app-settings:   backup-speed             5
+[info]    app-settings:   fnol-ay-difference       2
+[info]    app-settings:   fnol-ax-difference       2
+[info]    app-settings:   fnol-ay-to               2
+[info]    app-settings:   fnol-ay-from             1
+[info]    app-settings:   fnol-ax-to               2
+[info]    app-settings:   fnol-ax-from             1
+[info]    app-settings:   fnol-previous-az-avg-to  1.3
+[info]    app-settings:   fnol-previous-az-avg-from 0.7
+[info]    app-settings:   debug                    true
+[info]    app-settings:   heartbeat-interval       24
+[info]    app-settings:   fnol-z-weight            0.5
+[info]    app-settings:   fnol-lat-threshold       0.5
+[info]    app-settings:   fnol-min-g-threshold     0.8
+[info]    app-settings:   fnol-delta-v-threshold   0.14
+[info]    app-settings:   fnol-force-threshold     2.2
+[info]    app-settings:   fnol-gradient-threshold  18
+[info]    app-settings:   battery-low-threshold    30
+[info]    app-settings:   trip-timeout             600
+[info]    app-settings:   after-trip-reports       false
+[info]    app-settings:   tx-data-types            3
+[info]    Starting app-fnol service
+[info]    Starting wd service
+[info]    net: Initializing TCP/IP stack
+[info]    tls-client: Library initialized
+[info]    app-credentials: Loading credentials
+[info]    app-activation: Loading activation record
+[info]    app-activation:    delta-x: -0.011
+[info]    app-activation:    delta-y: 0.622
+[info]    app-activation:    delta-z: 0.574
+[info]    Starting led service
+[info]    Starting gps service
+[info]    app-gps: Acquisition task started
+[info]    bsp-power: Enabling GPS module power
+[info]    app-gps: Waking GPS module
+[info]    app-gps: Initialising GPS module
+[info]    app-gps: Starting acquisition
+[info]    app-fnol-detect: Original FNOL Enabled
+[info]    Press the U key within 3 seconds to check for updates
+[info]    Press the H key within 3 seconds to send a heartbeat
+[info]    app-journey: Starting journey...
+[info]    Starting app-logger service
+[info]    app-logger: Loaded metadata
+[info]    app-logger: Initialized
+[info]    G-Force max between current and last sample 504
+[info]    More than 10 2n IMU axis, resetting hour counter.
+[info]    app-logger: Starting trip /trip/1765891981T221
+[info]    app: 2025-12-16 13:33:01 :: 600 :: -0.000G 0.057G -0.123G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:02 :: 599 :: -0.000G 0.057G -0.123G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 202
+[info]    app: 2025-12-16 13:33:03 :: 598 :: -0.000G 0.036G -0.074G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 122
+[info]    app: 2025-12-16 13:33:04 :: 597 :: 0.000G 0.022G -0.044G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 72
+[info]    app: 2025-12-16 13:33:05 :: 596 :: 0.000G 0.013G -0.026G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 43
+[info]    app: 2025-12-16 13:33:06 :: 595 :: 0.000G 0.008G -0.016G :: -0.001G -0.862G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 27
+[info]    app: 2025-12-16 13:33:07 :: 594 :: 0.000G 0.004G -0.009G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 15
+[info]    app: 2025-12-16 13:33:08 :: 593 :: 0.000G 0.002G -0.006G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 9
+[info]    app: 2025-12-16 13:33:09 :: 592 :: 0.000G 0.001G -0.003G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 5
+[info]    app: 2025-12-16 13:33:10 :: 591 :: 0.000G 0.000G -0.002G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 4
+[info]    app: 2025-12-16 13:33:11 :: 590 :: 0.000G -0.000G -0.001G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:12 :: 589 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:13 :: 588 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:14 :: 587 :: 0.000G -0.000G -0.001G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:15 :: 586 :: 0.000G -0.001G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:16 :: 585 :: 0.000G -0.000G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:17 :: 584 :: 0.000G -0.001G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:18 :: 583 :: 0.000G -0.001G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:19 :: 582 :: 0.000G -0.001G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:20 :: 581 :: 0.000G -0.000G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:20 :: 581 :: 0.000G -0.000G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:21 :: 580 :: 0.000G -0.000G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:22 :: 579 :: 0.000G -0.001G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:23 :: 578 :: 0.000G -0.000G -0.000G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:24 :: 577 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:25 :: 576 :: 0.000G -0.001G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:26 :: 575 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:27 :: 574 :: 0.000G -0.001G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:28 :: 573 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:29 :: 572 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:30 :: 571 :: 0.000G -0.000G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:31 :: 570 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:32 :: 569 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:33 :: 568 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:34 :: 567 :: 0.000G -0.000G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:35 :: 566 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:36 :: 565 :: 0.000G -0.001G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:37 :: 564 :: 0.000G -0.001G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:38 :: 563 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:39 :: 562 :: 0.000G -0.000G -0.001G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:40 :: 561 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:41 :: 560 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:42 :: 559 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:43 :: 558 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:44 :: 557 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:45 :: 556 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:46 :: 555 :: 0.000G -0.001G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:47 :: 554 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:48 :: 553 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:49 :: 552 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:33:50 :: 551 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:51 :: 550 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:52 :: 549 :: 0.000G -0.000G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:53 :: 548 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:54 :: 547 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:55 :: 546 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:56 :: 545 :: 0.000G -0.001G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:57 :: 544 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:58 :: 543 :: 0.000G -0.001G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:33:59 :: 542 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:00 :: 541 :: 0.000G -0.000G -0.000G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:01 :: 540 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:02 :: 539 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:34:03 :: 538 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:04 :: 537 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:05 :: 536 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:06 :: 535 :: 0.000G -0.000G -0.001G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:34:07 :: 534 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:34:08 :: 533 :: 0.000G -0.000G -0.001G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:09 :: 532 :: 0.000G -0.000G -0.001G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:10 :: 531 :: 0.000G -0.000G -0.001G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:34:11 :: 530 :: 0.000G -0.000G -0.001G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:34:12 :: 529 :: 0.000G -0.000G -0.001G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:34:13 :: 528 :: 0.000G -0.000G -0.001G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:14 :: 527 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:15 :: 526 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:16 :: 525 :: 0.000G -0.001G -0.000G :: -0.000G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 1
+[info]    app: 2025-12-16 13:34:17 :: 524 :: 0.000G -0.000G -0.001G :: -0.001G -0.863G 0.356G :: -0.021783' 51.531765' nan' nan knots Q: 0 N: 0
+[info]    G-Force max between current and last sample 0
+[info]    app: 2025-12-16 13:34:18 :: 523 :: 0.000G -0.000G -0.00

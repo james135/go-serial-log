@@ -12,24 +12,12 @@ import (
 	"github.com/tarm/serial"
 )
 
-const (
-	// MAX_FILE_SIZE = 1000 * 1000 * 1000 * 1 // 1 Mb
-	MAX_FILE_SIZE = 1000 * 10
-	BAUD_RATE     = 115200
-	SYNC_INTERVAL = 10 * time.Second
-	STORAGE_DIR   = "/media/james/usb_ssd"
-	// STORAGE_DIR   = "./data"
-	AWS_PROFILE   = "thingco-dev"
-	UPLOAD_BUCKET = "platformsupport"
-	UPLOAD_PATH   = "r13"
-)
-
 var fw FileWatcher = FileWatcher{
 	v: map[string]bool{},
 }
 
 func createFileName(fileName string) string {
-	return fmt.Sprintf("%s/%s_%s.log", STORAGE_DIR, fileName, time.Now().UTC().Format("2006-01-02_15-04-05"))
+	return fmt.Sprintf("%s/%s_%s", STORAGE_DIR, fileName, time.Now().UTC().Format("2006-01-02_15-04-05"))
 }
 
 func logSerialData(port string, logfileName string) {
@@ -177,7 +165,7 @@ func main() {
 	}
 
 	for {
-		time.Sleep(time.Second * 30)
+		time.Sleep(UPLOAD_INTERVAL)
 		if err := UploadFiles(); err != nil {
 			fmt.Printf("warning - File upload error: %s\n", err)
 		}

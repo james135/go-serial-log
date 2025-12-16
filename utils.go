@@ -7,6 +7,7 @@ import (
 	"go-serial/aws"
 	"io"
 	"os"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -44,6 +45,14 @@ func UploadFiles() error {
 	if err != nil {
 		return err
 	}
+
+	type DataHolder struct {
+		Date string
+		Data []byte
+		Path string
+	}
+
+	data := map[string][]DataHolder{}
 
 	for _, entry := range entries {
 
@@ -87,23 +96,54 @@ func UploadFiles() error {
 			continue
 		}
 
-		if !strings.HasSuffix(fileName, ".gz") {
+		group := strings.Split(fileName, "_")[0]
+		date := strings.SplitAfterN(fileName, "_", 2)[1]
+
+		if strings.HasSuffix(fileName, ".gz") {
+			date = strings.Split(date, ".")[0]
+		} else {
 			fb, err = gZipData(fb)
 			if err != nil {
 				fmt.Printf("warning - Unable to compress file %s (%s)\n", fileName, err)
 				continue
 			}
-			fileName += ".gz"
 		}
 
-		if err := aws.UploadToS3(UPLOAD_BUCKET, fmt.Sprintf("%s/%s", UPLOAD_PATH, fileName), fb); err != nil {
-			fmt.Printf("warning - Unable to upload file %s (%s)\n", path, err)
+		data[group] = append(data[group], DataHolder{Date: date, Path: path, Data: fb})
+	}
+
+	for group, dhList := range data {
+
+		if len(dhList) == 0 {
 			continue
 		}
 
-		if err := os.Remove(path); err != nil {
-			fmt.Printf("warning - Unable to delete file from local file system (%s)\n", err)
+		sort.Slice(dhList, func(i, j int) bool {
+			return dhList[i].Date < dhList[j].Date
+		})
+
+		file := []byte{}
+
+		fmt.Printf("Concatenating %d files\n", len(dhList))
+
+		for _, dh := range dhList {
+			fmt.Printf("- %s (%s) [%s]\n", dh.Path, dh.Date, group)
+			file = append(file, dh.Data...)
+		}
+
+		fileName := fmt.Sprintf("%s_%s.log.gz", group, dhList[0].Date)
+
+		if err := aws.UploadToS3(UPLOAD_BUCKET, fmt.Sprintf("%s/%s", UPLOAD_PATH, fileName), file); err != nil {
+			fmt.Printf("warning - Unable to upload file %s (%s)\n", fileName, err)
 			continue
+		}
+
+		for _, dh := range dhList {
+			if err := os.Remove(dh.Path); err != nil {
+				fmt.Printf("warning - Unable to delete file from local file system (%s)\n", err)
+				continue
+			}
+			fmt.Printf("%s removed\n", dh.Path)
 		}
 	}
 

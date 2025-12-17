@@ -6,23 +6,19 @@ import (
 	"fmt"
 	"go-serial/aws"
 	"os"
+	"strconv"
 	"time"
 	"unicode/utf8"
 
 	"github.com/tarm/serial"
 )
 
-var fw FileWatcher = FileWatcher{
-	v: map[string]bool{},
-}
-
-func createFileName(fileName string) string {
-	return fmt.Sprintf("%s/%s_%s", STORAGE_DIR, fileName, time.Now().UTC().Format("2006-01-02_15-04-05"))
-}
-
 func logSerialData(port string, logfileName string) {
+
 	// Open serial port
+
 	config := &serial.Config{Name: port, Baud: BAUD_RATE, ReadTimeout: time.Millisecond * 100}
+
 	ser, err := serial.OpenPort(config)
 	if err != nil {
 		fmt.Printf("%s Serial error: %s", port, err)
@@ -136,36 +132,59 @@ func logSerialData(port string, logfileName string) {
 
 func main() {
 
+	// Override defaults with env variables
+
+	if os.Getenv("STORAGE_DIR") != "" {
+		STORAGE_DIR = os.Getenv("STORAGE_DIR")
+	}
+
+	if os.Getenv("AWS_PROFILE") != "" {
+		AWS_PROFILE = os.Getenv("AWS_PROFILE")
+	}
+
+	if os.Getenv("UPLOAD_PATH_PREFIX") != "" {
+		UPLOAD_PATH_PREFIX = os.Getenv("UPLOAD_PATH_PREFIX")
+	}
+
+	if os.Getenv("UPLOAD_INTERVAL") != "" {
+		i, err := strconv.Atoi(os.Getenv("UPLOAD_INTERVAL"))
+		if err != nil {
+			fmt.Printf("error - Unable to read UPLOAD_INTERVAL env variable\n")
+			os.Exit(1)
+		}
+		UPLOAD_INTERVAL = i
+	}
+
+	if os.Getenv("MAX_FILE_SIZE") != "" {
+		i, err := strconv.Atoi(os.Getenv("MAX_FILE_SIZE"))
+		if err != nil {
+			fmt.Printf("error - Unable to read MAX_FILE_SIZE env variable\n")
+			os.Exit(1)
+		}
+		MAX_FILE_SIZE = i
+	}
+
+	// Create storage directory if it doesn't exist already
+
 	if err := os.MkdirAll(STORAGE_DIR, 0755); err != nil {
 		fmt.Printf("error - Unable to create storage directory\n")
 		os.Exit(1)
 	}
 
+	// Create AWS Session
+
 	aws.Configure(AWS_PROFILE)
 
-	// config := map[string]string{
-	// 	"/dev/cu.usbserial-21240": "port_D",
-	// 	"/dev/cu.usbserial-21260": "port_F",
-	// 	"/dev/cu.usbserial-21270": "port_G",
-	// 	"/dev/cu.usbserial-21250": "port_E",
-	// }
-
-	config := map[string]string{
-		"/dev/ttyUSB0": "0",
-		"/dev/ttyUSB1": "1",
-		"/dev/ttyUSB2": "2",
-		"/dev/ttyUSB3": "3",
-		"/dev/ttyUSB4": "4",
-		"/dev/ttyUSB5": "5",
-		"/dev/ttyUSB6": "6",
-	}
+	// Start serial reader/writer goroutines
 
 	for port, logName := range config {
 		go logSerialData(port, logName)
 	}
 
+	// Keep main process alive and attempt to upload any stored files to s3 every interval
+
 	for {
-		time.Sleep(UPLOAD_INTERVAL)
+		time.Sleep(time.Duration(UPLOAD_INTERVAL) * time.Minute)
 		if err := UploadFiles(); err != nil {
 			fmt.Printf("warning - File upload error: %s\n", err)
 		}

@@ -37,6 +37,10 @@ func (c *FileWatcher) CheckFileIsOpen(key string) bool {
 	return ok
 }
 
+var fw FileWatcher = FileWatcher{
+	v: map[string]bool{},
+}
+
 func UploadFiles() error {
 
 	fmt.Printf("Starting upload process (%s)\n", time.Now().UTC().Format(time.RFC3339))
@@ -133,7 +137,7 @@ func UploadFiles() error {
 
 		fileName := fmt.Sprintf("%s_%s.log.gz", group, dhList[0].Date)
 
-		if err := aws.UploadToS3(UPLOAD_BUCKET, fmt.Sprintf("%s/%s", UPLOAD_PATH, fileName), file); err != nil {
+		if err := aws.UploadToS3(UPLOAD_BUCKET, fmt.Sprintf("%s/%s/%s", UPLOAD_PATH, UPLOAD_PATH_PREFIX, fileName), file); err != nil {
 			fmt.Printf("warning - Unable to upload file %s (%s)\n", fileName, err)
 			continue
 		}
@@ -197,4 +201,8 @@ func fileToBytes(file *os.File) ([]byte, error) {
 	}
 
 	return io.ReadAll(file)
+}
+
+func createFileName(fileName string) string {
+	return fmt.Sprintf("%s/%s_%s", STORAGE_DIR, fileName, time.Now().UTC().Format("2006-01-02_15-04-05"))
 }

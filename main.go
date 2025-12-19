@@ -21,7 +21,7 @@ func logSerialData(port string, logfileName string) {
 
 	ser, err := serial.OpenPort(config)
 	if err != nil {
-		fmt.Printf("%s Serial error: %s", port, err)
+		fmt.Printf("%s Serial error: %s\n", port, err)
 		return
 	}
 	defer ser.Close()
@@ -32,7 +32,7 @@ func logSerialData(port string, logfileName string) {
 	// Open log file
 	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Printf("%s File error: %s", port, err)
+		fmt.Printf("%s File error: %s\n", port, err)
 		return
 	}
 	defer file.Close()
@@ -81,7 +81,7 @@ func logSerialData(port string, logfileName string) {
 
 				for i := range rows {
 					if len(rows[i]) > 0 {
-						toWrite += fmt.Sprintf("%s: %s", time.Now().UTC().Format(time.RFC3339), rows[i])
+						toWrite += fmt.Sprintf("%s: %s", time.Now().UTC().Format("2006-01-02 15:04:05"), rows[i])
 					}
 				}
 
@@ -167,7 +167,7 @@ func main() {
 	// Create storage directory if it doesn't exist already
 
 	if err := os.MkdirAll(STORAGE_DIR, 0755); err != nil {
-		fmt.Printf("error - Unable to create storage directory\n")
+		fmt.Printf("error - Unable to create storage directory '%s'\n", STORAGE_DIR)
 		os.Exit(1)
 	}
 
@@ -177,8 +177,21 @@ func main() {
 
 	// Start serial reader/writer goroutines
 
-	for port, logName := range config {
-		go logSerialData(port, logName)
+	serialPorts := map[string]string{
+		"0": os.Getenv("P0"),
+		"1": os.Getenv("P1"),
+		"2": os.Getenv("P2"),
+		"3": os.Getenv("P3"),
+		"4": os.Getenv("P4"),
+		"5": os.Getenv("P5"),
+		"6": os.Getenv("P6"),
+	}
+
+	for portName, port := range serialPorts {
+		if port == "" {
+			continue
+		}
+		go logSerialData(port, portName)
 	}
 
 	// Keep main process alive and attempt to upload any stored files to s3 every interval

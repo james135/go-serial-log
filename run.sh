@@ -7,10 +7,13 @@ export UPLOAD_PATH_PREFIX=james
 export MAX_FILE_SIZE=10000 # Bytes
 export UPLOAD_INTERVAL=2 # Minutes
 
-export P0=/dev/cu.usbserial-21340
-export P1=/dev/cu.usbserial-21350
-export P2=/dev/cu.usbserial-21360
-export P3=/dev/cu.usbserial-21370
+export P0=/dev/cu.usbserial-21240
+# export P1=/dev/cu.usbserial-21350
+# export P2=/dev/cu.usbserial-21360
+# export P3=/dev/cu.usbserial-21370
+export P1=
+export P2=
+export P3=
 export P4=
 export P5=
 export P6=
@@ -23,4 +26,4 @@ export P6=
 # export P5=/dev/ttyUSB5
 # export P6=/dev/ttyUSB6
 
-exec ./refurbination
+exec ./builds/refurbination

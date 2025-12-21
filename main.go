@@ -7,6 +7,7 @@ import (
 	"go-serial/aws"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 	"unicode/utf8"
 
@@ -26,30 +27,79 @@ func logSerialData(port string, logfileName string) {
 	}
 	defer ser.Close()
 
-	filePath := createFileName(logfileName)
-	fw.WatchFile(filePath)
+	lastSync := time.Now().UTC()
+	lastSave := time.Now().UTC()
+	buffer := make([]byte, 256)
 
-	// Open log file
-	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
+	var writer *bufio.Writer
+	var file *os.File
+
+	bytesWritten := 0
+	logFile := []byte{}
+	filePath := ""
+
+	createWritableFile := func() error {
+
+		if writer != nil {
+			if err := writer.Flush(); err != nil {
+				fmt.Printf("warning - Could not flush writer: %s\n", err)
+			}
+
+			writer = nil
+		}
+		if file != nil {
+
+			if err := file.Sync(); err != nil {
+				fmt.Printf("warning - Could not sync file: %s\n", err)
+			}
+			if err := file.Close(); err != nil {
+				fmt.Printf("warning - Could not close file: %s\n", err)
+			}
+
+			if err := compressFile(filePath); err != nil {
+				fmt.Printf("[warning] %s File compression error: %s", port, err)
+			}
+
+			fw.RemoveFile(filePath)
+
+			file = nil
+		}
+
+		filePath = createFileName(logfileName)
+		fw.WatchFile(filePath)
+
+		// Open log file
+		file, err = os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			return err
+		}
+
+		writer = bufio.NewWriter(file)
+		fmt.Printf("Logging serial data from %s at %d baud to %s\n", port, BAUD_RATE, filePath)
+
+		return nil
+	}
+
+	if err := createWritableFile(); err != nil {
 		fmt.Printf("%s File error: %s\n", port, err)
 		return
 	}
-	defer file.Close()
-
-	writer := bufio.NewWriter(file)
-	fmt.Printf("Logging serial data from %s at %d baud to %s\n", port, BAUD_RATE, filePath)
-
-	lastSync := time.Now().UTC()
-	buffer := make([]byte, 256)
 
 	defer func() {
-		writer.Flush()
-		file.Sync()
+		if writer != nil {
+			if err := writer.Flush(); err != nil {
+				fmt.Printf("warning - Could not flush writer: %s\n", err)
+			}
+		}
+		if file != nil {
+			if err := file.Sync(); err != nil {
+				fmt.Printf("warning - Could not sync file: %s\n", err)
+			}
+			if err := file.Close(); err != nil {
+				fmt.Printf("warning - Could not close file: %s\n", err)
+			}
+		}
 	}()
-
-	runRun := []byte{}
-	bytesWritten := 0
 
 	for {
 		n, err := ser.Read(buffer)
@@ -69,28 +119,33 @@ func logSerialData(port string, logfileName string) {
 				data = bytes.ToValidUTF8(data, []byte("�"))
 			}
 
-			runRun = append(runRun, data...)
+			logFile = append(logFile, data...)
 
-			lastNewLineIndex := bytes.LastIndex(runRun, []byte("\n"))
+			lastNewLineIndex := bytes.LastIndex(logFile, []byte("\n"))
 
 			if lastNewLineIndex >= 0 {
 
-				rows := bytes.Split(runRun[:lastNewLineIndex+1], []byte("\n"))
+				rows := bytes.Split(logFile[:lastNewLineIndex+1], []byte("\n"))
 
-				toWrite := ""
+				var sb strings.Builder
 
-				for i := range rows {
-					if len(rows[i]) > 0 {
-						toWrite += fmt.Sprintf("%s: %s", time.Now().UTC().Format("2006-01-02 15:04:05"), rows[i])
+				for _, row := range rows {
+					if len(row) > 0 {
+						sb.WriteString(time.Now().UTC().Format("2006-01-02 15:04:05"))
+						sb.WriteString(": ")
+						sb.Write(row)
+						sb.WriteByte('\n')
 					}
 				}
 
-				bw, err := writer.Write([]byte(toWrite))
+				fmt.Printf("===============\n%s\n=================\n", sb.String())
+
+				bw, err := writer.WriteString(sb.String())
 				if err != nil {
 					fmt.Printf("[warning] %s Write error: %s\n", port, err)
 				}
 
-				runRun = runRun[lastNewLineIndex+1:]
+				logFile = logFile[lastNewLineIndex+1:]
 
 				bytesWritten += bw
 			}
@@ -101,30 +156,19 @@ func logSerialData(port string, logfileName string) {
 			writer.Flush()
 			lastSync = time.Now().UTC()
 
-			if bytesWritten > MAX_FILE_SIZE {
+			fmt.Printf("Syncing (%v)\n", time.Since(lastSave))
 
-				file.Close()
+			if bytesWritten > MAX_FILE_SIZE || time.Since(lastSave) > time.Hour {
 
-				if err := compressFile(filePath); err != nil {
-					fmt.Printf("[warning] %s File compression error: %s", port, err)
-				}
+				fmt.Printf("Writing file: Too large (%v) Too Old (%v [%v])\n", bytesWritten > MAX_FILE_SIZE, time.Since(lastSave) > time.Hour, time.Since(lastSave))
 
-				fw.RemoveFile(logfileName)
-
-				filePath = createFileName(logfileName)
-				fw.WatchFile(filePath)
-
-				// Open log file
-				file, err = os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-				if err != nil {
-					fmt.Printf("%s File error: %s", port, err)
+				if err := createWritableFile(); err != nil {
+					fmt.Printf("%s File error: %s\n", port, err)
 					return
 				}
-				defer file.Close()
-
-				writer = bufio.NewWriter(file)
 
 				bytesWritten = 0
+				lastSave = time.Now().UTC()
 			}
 		}
 	}

@@ -21,12 +21,14 @@ type FileWatcher struct {
 func (c *FileWatcher) WatchFile(key string) {
 	c.mu.Lock()
 	c.v[key] = true
+	fmt.Printf("Started watching file: '%s'\n", key)
 	c.mu.Unlock()
 }
 
 func (c *FileWatcher) RemoveFile(key string) {
 	c.mu.Lock()
 	delete(c.v, key)
+	fmt.Printf("No longer watching file: '%s'\n", key)
 	c.mu.Unlock()
 }
 
@@ -43,7 +45,7 @@ var fw FileWatcher = FileWatcher{
 
 func UploadFiles() error {
 
-	fmt.Printf("Starting upload process (%s)\n", time.Now().UTC().Format(time.RFC3339))
+	fmt.Printf("Attempting upload process (%s)\n", time.Now().UTC().Format(time.RFC3339))
 
 	entries, err := os.ReadDir(STORAGE_DIR)
 	if err != nil {
@@ -71,6 +73,7 @@ func UploadFiles() error {
 		fileIsOpen := fw.CheckFileIsOpen(path)
 
 		if fileIsOpen {
+			fmt.Printf("File '%s' is active - ignore for upload and continue writing to it instead\n", path)
 			continue
 		}
 
@@ -182,8 +185,13 @@ func compressFile(filePath string) error {
 		return err
 	}
 
-	if err := os.WriteFile(fmt.Sprintf("%s.gz", filePath), fGz, 0644); err != nil {
-		return err
+	if len(fGz) > 0 {
+
+		fmt.Printf("Storing a compressed file: %s\n", filePath)
+
+		if err := os.WriteFile(fmt.Sprintf("%s.gz", filePath), fGz, 0644); err != nil {
+			return err
+		}
 	}
 
 	if err := os.Remove(filePath); err != nil {

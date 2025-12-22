@@ -180,12 +180,12 @@ func compressFile(filePath string) error {
 		return err
 	}
 
-	fGz, err := gZipData(f)
-	if err != nil {
-		return err
-	}
+	if len(f) > 0 {
 
-	if len(fGz) > 0 {
+		fGz, err := gZipData(f)
+		if err != nil {
+			return err
+		}
 
 		fmt.Printf("Storing a compressed file: %s\n", filePath)
 

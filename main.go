@@ -28,7 +28,6 @@ func logSerialData(port string, logfileName string) {
 	defer ser.Close()
 
 	lastSync := time.Now().UTC()
-	lastSave := time.Now().UTC()
 	buffer := make([]byte, 256)
 
 	var writer *bufio.Writer
@@ -77,6 +76,8 @@ func logSerialData(port string, logfileName string) {
 		writer = bufio.NewWriter(file)
 		fmt.Printf("Logging serial data from %s at %d baud to %s\n", port, BAUD_RATE, filePath)
 
+		bytesWritten = 0
+
 		return nil
 	}
 
@@ -101,54 +102,72 @@ func logSerialData(port string, logfileName string) {
 		}
 	}()
 
+	ticksWithoutData := 0
+
 	for {
 		n, err := ser.Read(buffer)
-		if err != nil {
-			if err.Error() == "EOF" {
-				continue // Ignore EOF and wait for new data
-			}
+		if err != nil && err.Error() != "EOF" {
 			fmt.Printf("%s Read error: %s\n", port, err)
 			break
 		}
 
-		if n > 0 {
-			data := buffer[:n]
+		if n == 0 {
 
-			// Ensure valid UTF-8
-			if !utf8.Valid(data) {
-				data = bytes.ToValidUTF8(data, []byte("�"))
+			fmt.Printf("Ticks without data: %+v (%s)\n", ticksWithoutData, time.Now().UTC().Format("2006-01-02 15:04:05"))
+
+			ticksWithoutData++
+
+			if ticksWithoutData > 1000 {
+				if err := createWritableFile(); err != nil {
+					fmt.Printf("%s File error: %s\n", port, err)
+					return
+				}
+				ticksWithoutData = 0
 			}
 
-			logFile = append(logFile, data...)
+			continue
+		}
 
-			lastNewLineIndex := bytes.LastIndex(logFile, []byte("\n"))
+		ticksWithoutData = 0
 
-			if lastNewLineIndex >= 0 {
+		fmt.Printf("%+v: %+v\n", n, string(buffer))
 
-				rows := bytes.Split(logFile[:lastNewLineIndex+1], []byte("\n"))
+		data := buffer[:n]
 
-				var sb strings.Builder
+		// Ensure valid UTF-8
+		if !utf8.Valid(data) {
+			data = bytes.ToValidUTF8(data, []byte("�"))
+		}
 
-				for _, row := range rows {
-					if len(row) > 0 {
-						sb.WriteString(time.Now().UTC().Format("2006-01-02 15:04:05"))
-						sb.WriteString(": ")
-						sb.Write(row)
-						sb.WriteByte('\n')
-					}
+		logFile = append(logFile, data...)
+
+		lastNewLineIndex := bytes.LastIndex(logFile, []byte("\n"))
+
+		if lastNewLineIndex >= 0 {
+
+			rows := bytes.Split(logFile[:lastNewLineIndex+1], []byte("\n"))
+
+			var sb strings.Builder
+
+			for _, row := range rows {
+				if len(row) > 0 {
+					sb.WriteString(time.Now().UTC().Format("2006-01-02 15:04:05"))
+					sb.WriteString(": ")
+					sb.Write(row)
+					sb.WriteByte('\n')
 				}
-
-				fmt.Printf("===============\n%s\n=================\n", sb.String())
-
-				bw, err := writer.WriteString(sb.String())
-				if err != nil {
-					fmt.Printf("[warning] %s Write error: %s\n", port, err)
-				}
-
-				logFile = logFile[lastNewLineIndex+1:]
-
-				bytesWritten += bw
 			}
+
+			fmt.Printf("===============\n%s\n=================\n", sb.String())
+
+			bw, err := writer.WriteString(sb.String())
+			if err != nil {
+				fmt.Printf("[warning] %s Write error: %s\n", port, err)
+			}
+
+			logFile = logFile[lastNewLineIndex+1:]
+
+			bytesWritten += bw
 		}
 
 		if time.Since(lastSync) >= SYNC_INTERVAL {
@@ -156,22 +175,16 @@ func logSerialData(port string, logfileName string) {
 			writer.Flush()
 			lastSync = time.Now().UTC()
 
-			fmt.Printf("Syncing (%v)\n", time.Since(lastSave))
-
-			if bytesWritten > MAX_FILE_SIZE || time.Since(lastSave) > time.Hour {
-
-				fmt.Printf("Writing file: Too large (%v) Too Old (%v [%v])\n", bytesWritten > MAX_FILE_SIZE, time.Since(lastSave) > time.Hour, time.Since(lastSave))
+			if bytesWritten > MAX_FILE_SIZE {
 
 				if err := createWritableFile(); err != nil {
 					fmt.Printf("%s File error: %s\n", port, err)
 					return
 				}
-
-				bytesWritten = 0
-				lastSave = time.Now().UTC()
 			}
 		}
 	}
+
 }
 
 func main() {

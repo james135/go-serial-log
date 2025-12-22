@@ -113,15 +113,19 @@ func logSerialData(port string, logfileName string) {
 
 		if n == 0 {
 
-			fmt.Printf("Ticks without data: %+v (%s)\n", ticksWithoutData, time.Now().UTC().Format("2006-01-02 15:04:05"))
+			// fmt.Printf("Ticks without data: %+v (%s)\n", ticksWithoutData, time.Now().UTC().Format("2006-01-02 15:04:05"))
 
 			ticksWithoutData++
 
-			if ticksWithoutData > 1000 {
+			if ticksWithoutData > 6000 {
+
+				fmt.Printf("No data for 10 minutes - recycling files\n")
+
 				if err := createWritableFile(); err != nil {
 					fmt.Printf("%s File error: %s\n", port, err)
 					return
 				}
+
 				ticksWithoutData = 0
 			}
 
@@ -129,8 +133,6 @@ func logSerialData(port string, logfileName string) {
 		}
 
 		ticksWithoutData = 0
-
-		fmt.Printf("%+v: %+v\n", n, string(buffer))
 
 		data := buffer[:n]
 
@@ -158,7 +160,7 @@ func logSerialData(port string, logfileName string) {
 				}
 			}
 
-			fmt.Printf("===============\n%s\n=================\n", sb.String())
+			// fmt.Printf("===============\n%s\n=================\n", sb.String())
 
 			bw, err := writer.WriteString(sb.String())
 			if err != nil {

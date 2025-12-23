@@ -117,26 +117,41 @@ func logSerialData(port string, logfileName string) {
 		}
 	}()
 
-	readsWithoutData := 0
+	ch := make(chan []byte, 100)
 
-	// ms := MockSerial{}
+	// Serial reader - read from the serial port and push into buffered channel for processing
 
-	for {
-		n, err := ser.Read(buffer)
-		// n, err := ms.Read(buffer)
-		if err != nil && err != io.EOF {
+	go func() {
+		// ms := MockSerial{}
+		for {
+			n, err := ser.Read(buffer)
+			// n, err := ms.Read(buffer)
+			if err != nil && err != io.EOF {
 
-			// Transient error - retry to read from serial
-			if errors.Is(err, os.ErrDeadlineExceeded) {
-				continue
+				// Transient error - retry to read from serial
+				if errors.Is(err, os.ErrDeadlineExceeded) {
+					continue
+				}
+
+				// Likely fatal error - exit
+				fmt.Printf("[error] %s Read error: %s\n", port, err)
+				break
 			}
 
-			// Likely fatal error - exit
-			fmt.Printf("[error] %s Read error: %s\n", port, err)
-			break
+			ch <- buffer[:n]
 		}
+		close(ch)
+	}()
 
-		if n == 0 {
+	// Serial Processor - read from the data channel, process the data and write to files
+
+	readsWithoutData := 0
+
+	for data := range ch {
+
+		// fmt.Printf("-------\n[%d] %s\n-------\n", len(data), data)
+
+		if len(data) == 0 {
 
 			// Check if we have stopped receiving data
 
@@ -182,8 +197,6 @@ func logSerialData(port string, logfileName string) {
 		}
 
 		readsWithoutData = 0
-
-		data := buffer[:n]
 
 		// Ensure valid UTF-8
 		if !utf8.Valid(data) {
@@ -305,7 +318,9 @@ func main() {
 	// Keep main process alive and attempt to upload any stored files to s3 every interval
 
 	for {
+
 		time.Sleep(time.Duration(UPLOAD_INTERVAL) * time.Minute)
+
 		if err := UploadFiles(); err != nil {
 			fmt.Printf("warning - File upload error: %s\n", err)
 		}

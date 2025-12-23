@@ -25,5 +25,3 @@ export P6=
 # export P4=/dev/ttyUSB4
 # export P5=/dev/ttyUSB5
 # export P6=/dev/ttyUSB6
-
-exec ./builds/refurbination

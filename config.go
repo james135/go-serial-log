@@ -17,5 +17,5 @@ const (
 
 const (
 	BAUD_RATE     = 115200
-	SYNC_INTERVAL = 30 * time.Second
+	SYNC_INTERVAL = 10 * time.Second
 )

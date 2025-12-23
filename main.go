@@ -50,6 +50,8 @@ func logSerialData(port string, logfileName string) {
 		}
 		if file != nil {
 
+			// TODO - Move Sync() and Close() to the goroutine safely somehow
+
 			if err := file.Sync(); err != nil {
 				fmt.Printf("warning - Could not sync file: %s\n", err)
 			}
@@ -57,13 +59,15 @@ func logSerialData(port string, logfileName string) {
 				fmt.Printf("warning - Could not close file: %s\n", err)
 			}
 
-			if err := compressFile(filePath); err != nil {
-				fmt.Printf("[warning] %s File compression error: %s", port, err)
-			}
-
 			fw.RemoveFile(filePath)
 
 			file = nil
+
+			go func(path string) {
+				if err := compressFile(path); err != nil {
+					fmt.Printf("[warning] %s File compression error: %s\n", port, err)
+				}
+			}(filePath)
 		}
 
 		filePath = createFileName(logfileName)
@@ -106,8 +110,11 @@ func logSerialData(port string, logfileName string) {
 
 	readsWithoutData := 0
 
+	// ms := MockSerial{}
+
 	for {
 		n, err := ser.Read(buffer)
+		// n, err := ms.Read(buffer)
 		if err != nil && err != io.EOF {
 
 			// Transient error - retry to read from serial
@@ -116,23 +123,41 @@ func logSerialData(port string, logfileName string) {
 			}
 
 			// Likely fatal error - exit
-			fmt.Printf("[warning] %s Read error: %s\n", port, err)
+			fmt.Printf("[error] %s Read error: %s\n", port, err)
 			break
 		}
 
 		if n == 0 {
 
-			// fmt.Printf("Ticks without data: %+v (%s)\n", ticksWithoutData, time.Now().UTC().Format("2006-01-02 15:04:05"))
+			// Check if we have stopped receiving data
+
+			// fmt.Printf("Ticks without data: %+v (%s)\n", readsWithoutData, time.Now().UTC().Format("2006-01-02 15:04:05"))
 
 			readsWithoutData++
 
 			if readsWithoutData > 6000 {
 
-				fmt.Printf("No data for 10 minutes - recycling files\n")
+				if writer != nil {
+					if err := writer.Flush(); err != nil {
+						fmt.Printf("[warning] - %s could not Flush the writer (%s)\n", port, err)
+					}
+				}
 
-				if err := createWritableFile(); err != nil {
-					fmt.Printf("%s File error: %s\n", port, err)
-					return
+				if file != nil {
+					info, err := file.Stat()
+					if err != nil {
+						fmt.Printf("[warning] - %s could not read file stats (%s)\n", port, err)
+					} else {
+						fileSize := info.Size()
+						fmt.Printf("Active file is currently %d bytes\n", fileSize)
+
+						if fileSize > 0 {
+							if err := createWritableFile(); err != nil {
+								fmt.Printf("%s File error: %s\n", port, err)
+								return
+							}
+						}
+					}
 				}
 
 				readsWithoutData = 0
@@ -266,8 +291,8 @@ func main() {
 
 	for {
 		time.Sleep(time.Duration(UPLOAD_INTERVAL) * time.Minute)
-		if err := UploadFiles(); err != nil {
-			fmt.Printf("warning - File upload error: %s\n", err)
-		}
+		// if err := UploadFiles(); err != nil {
+		// 	fmt.Printf("warning - File upload error: %s\n", err)
+		// }
 	}
 }

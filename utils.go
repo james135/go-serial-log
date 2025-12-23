@@ -175,6 +175,8 @@ func gZipData(data []byte) ([]byte, error) {
 
 func compressFile(filePath string) error {
 
+	fmt.Printf("Reading file at path %s\n", filePath)
+
 	f, err := os.ReadFile(filePath)
 	if err != nil {
 		return err

@@ -3,8 +3,10 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"errors"
 	"fmt"
 	"go-serial/aws"
+	"io"
 	"os"
 	"strconv"
 	"strings"
@@ -102,12 +104,19 @@ func logSerialData(port string, logfileName string) {
 		}
 	}()
 
-	ticksWithoutData := 0
+	readsWithoutData := 0
 
 	for {
 		n, err := ser.Read(buffer)
-		if err != nil && err.Error() != "EOF" {
-			fmt.Printf("%s Read error: %s\n", port, err)
+		if err != nil && err != io.EOF {
+
+			// Transient error - retry to read from serial
+			if errors.Is(err, os.ErrDeadlineExceeded) {
+				continue
+			}
+
+			// Likely fatal error - exit
+			fmt.Printf("[warning] %s Read error: %s\n", port, err)
 			break
 		}
 
@@ -115,9 +124,9 @@ func logSerialData(port string, logfileName string) {
 
 			// fmt.Printf("Ticks without data: %+v (%s)\n", ticksWithoutData, time.Now().UTC().Format("2006-01-02 15:04:05"))
 
-			ticksWithoutData++
+			readsWithoutData++
 
-			if ticksWithoutData > 6000 {
+			if readsWithoutData > 6000 {
 
 				fmt.Printf("No data for 10 minutes - recycling files\n")
 
@@ -126,13 +135,13 @@ func logSerialData(port string, logfileName string) {
 					return
 				}
 
-				ticksWithoutData = 0
+				readsWithoutData = 0
 			}
 
 			continue
 		}
 
-		ticksWithoutData = 0
+		readsWithoutData = 0
 
 		data := buffer[:n]
 

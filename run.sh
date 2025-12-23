@@ -4,8 +4,7 @@
 export STORAGE_DIR=./data
 export AWS_PROFILE=thingco-dev
 export UPLOAD_PATH_PREFIX=james
-# export MAX_FILE_SIZE=10000 # Bytes
-export MAX_FILE_SIZE=1000 # Bytes
+export MAX_FILE_SIZE=10000 # Bytes
 export UPLOAD_INTERVAL=2 # Minutes
 
 export P0=/dev/cu.usbserial-21240

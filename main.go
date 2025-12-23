@@ -291,8 +291,8 @@ func main() {
 
 	for {
 		time.Sleep(time.Duration(UPLOAD_INTERVAL) * time.Minute)
-		// if err := UploadFiles(); err != nil {
-		// 	fmt.Printf("warning - File upload error: %s\n", err)
-		// }
+		if err := UploadFiles(); err != nil {
+			fmt.Printf("warning - File upload error: %s\n", err)
+		}
 	}
 }

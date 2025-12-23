@@ -39,15 +39,18 @@ func logSerialData(port string, logfileName string) {
 	logFile := []byte{}
 	filePath := ""
 
+	// Attempts to close any existing file and create a new one
 	createWritableFile := func() error {
 
 		if writer != nil {
+
 			if err := writer.Flush(); err != nil {
 				fmt.Printf("warning - Could not flush writer: %s\n", err)
 			}
 
 			writer = nil
 		}
+
 		if file != nil {
 
 			// TODO - Move Sync() and Close() to the goroutine safely somehow
@@ -71,7 +74,6 @@ func logSerialData(port string, logfileName string) {
 		}
 
 		filePath = createFileName(logfileName)
-		fw.WatchFile(filePath)
 
 		// Open log file
 		file, err = os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -80,9 +82,12 @@ func logSerialData(port string, logfileName string) {
 		}
 
 		writer = bufio.NewWriter(file)
+
 		fmt.Printf("Logging serial data from %s at %d baud to %s\n", port, BAUD_RATE, filePath)
 
 		bytesWritten = 0
+
+		fw.WatchFile(filePath)
 
 		return nil
 	}
@@ -137,6 +142,8 @@ func logSerialData(port string, logfileName string) {
 
 			if readsWithoutData > 6000 {
 
+				fmt.Printf("10 minutes since data on port %s - checking file size\n", port)
+
 				if writer != nil {
 					if err := writer.Flush(); err != nil {
 						fmt.Printf("[warning] - %s could not Flush the writer (%s)\n", port, err)
@@ -148,10 +155,14 @@ func logSerialData(port string, logfileName string) {
 					if err != nil {
 						fmt.Printf("[warning] - %s could not read file stats (%s)\n", port, err)
 					} else {
+
 						fileSize := info.Size()
-						fmt.Printf("Active file is currently %d bytes\n", fileSize)
+						fmt.Printf("Active file '%s' is currently %d bytes\n", filePath, fileSize)
 
 						if fileSize > 0 {
+
+							fmt.Printf("Dangling file '%s' found - rotating so it will become available for upload\n", filePath)
+
 							if err := createWritableFile(); err != nil {
 								fmt.Printf("%s File error: %s\n", port, err)
 								return

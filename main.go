@@ -62,14 +62,18 @@ func logSerialData(port string, logfileName string) {
 				fmt.Printf("warning - Could not close file: %s\n", err)
 			}
 
-			fw.RemoveFile(filePath)
-
 			file = nil
 
 			go func(path string) {
+
+				// Attempt to compress the most recently written to file
 				if err := compressFile(path); err != nil {
 					fmt.Printf("[warning] %s File compression error: %s\n", port, err)
 				}
+
+				// No more operations to be performed on active file by the serial logger - release for upload
+				fw.RemoveFile(path)
+
 			}(filePath)
 		}
 
@@ -142,7 +146,7 @@ func logSerialData(port string, logfileName string) {
 
 			if readsWithoutData > 6000 {
 
-				fmt.Printf("10 minutes since data on port %s - checking file size\n", port)
+				fmt.Printf("\n%s\n10 minutes since data on port %s - checking file size\n", time.Now().Format(time.RFC3339), port)
 
 				if writer != nil {
 					if err := writer.Flush(); err != nil {

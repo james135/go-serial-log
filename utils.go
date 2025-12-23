@@ -45,7 +45,7 @@ var fw FileWatcher = FileWatcher{
 
 func UploadFiles() error {
 
-	fmt.Printf("Attempting upload process (%s)\n", time.Now().UTC().Format(time.RFC3339))
+	fmt.Printf("\n%s\n*** Attempting Upload ***\n", time.Now().UTC().Format(time.RFC3339))
 
 	entries, err := os.ReadDir(STORAGE_DIR)
 	if err != nil {

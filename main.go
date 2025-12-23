@@ -159,9 +159,9 @@ func logSerialData(port string, logfileName string) {
 
 			readsWithoutData++
 
-			if readsWithoutData > 6000 {
+			if readsWithoutData > NO_DATA_READ_COUNT {
 
-				fmt.Printf("\n%s\n10 minutes since data on port %s - checking file size\n", time.Now().Format(time.RFC3339), port)
+				fmt.Printf("\n%s\nNo data received for extended period on port %s - checking file size\n", time.Now().Format(time.RFC3339), port)
 
 				if writer != nil {
 					if err := writer.Flush(); err != nil {
@@ -283,6 +283,15 @@ func main() {
 			os.Exit(1)
 		}
 		MAX_FILE_SIZE = i
+	}
+
+	if os.Getenv("NO_DATA_READ_COUNT") != "" {
+		i, err := strconv.Atoi(os.Getenv("NO_DATA_READ_COUNT"))
+		if err != nil {
+			fmt.Printf("error - Unable to read NO_DATA_READ_COUNT env variable\n")
+			os.Exit(1)
+		}
+		NO_DATA_READ_COUNT = i
 	}
 
 	// Create storage directory if it doesn't exist already

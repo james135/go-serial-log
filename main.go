@@ -16,6 +16,8 @@ import (
 	"github.com/tarm/serial"
 )
 
+const TEST_MODE = false
+
 func logSerialData(port string, logfileName string) {
 
 	// Open serial port
@@ -23,7 +25,7 @@ func logSerialData(port string, logfileName string) {
 	config := &serial.Config{Name: port, Baud: BAUD_RATE, ReadTimeout: time.Millisecond * 100}
 
 	ser, err := serial.OpenPort(config)
-	if err != nil {
+	if err != nil && !TEST_MODE {
 		fmt.Printf("%s Serial error: %s\n", port, err)
 		return
 	}
@@ -122,10 +124,15 @@ func logSerialData(port string, logfileName string) {
 	// Serial reader - read from the serial port and push into buffered channel for processing
 
 	go func() {
-		// ms := MockSerial{}
+		ms := MockSerial{}
+		n := 0
 		for {
-			n, err := ser.Read(buffer)
-			// n, err := ms.Read(buffer)
+			if TEST_MODE {
+				n, err = ms.Read(buffer)
+			} else {
+				n, err = ser.Read(buffer)
+			}
+
 			if err != nil && err != io.EOF {
 
 				// Transient error - retry to read from serial
@@ -138,7 +145,13 @@ func logSerialData(port string, logfileName string) {
 				break
 			}
 
-			ch <- buffer[:n]
+			if n > 0 {
+				b := make([]byte, n)
+				copy(b, buffer[:n])
+				ch <- b
+			} else {
+				ch <- nil
+			}
 		}
 		close(ch)
 	}()
@@ -330,8 +343,10 @@ func main() {
 
 		time.Sleep(time.Duration(UPLOAD_INTERVAL) * time.Minute)
 
-		if err := UploadFiles(); err != nil {
-			fmt.Printf("warning - File upload error: %s\n", err)
+		if !TEST_MODE {
+			if err := UploadFiles(); err != nil {
+				fmt.Printf("warning - File upload error: %s\n", err)
+			}
 		}
 	}
 }

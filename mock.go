@@ -12,11 +12,11 @@ type MockSerial struct {
 
 func (ms *MockSerial) Read(b []byte) (n int, err error) {
 
-	time.Sleep(50 * time.Millisecond)
+	time.Sleep(1 * time.Millisecond)
 
 	t := time.Now().Minute()
 
-	if t%2 == 0 && ms.ExecutionCount < 1000 {
+	if t%2 == 0 && ms.ExecutionCount < 100000 {
 
 		ms.ExecutionCount++
 

@@ -140,7 +140,7 @@ func UploadFiles() error {
 
 		fileName := fmt.Sprintf("%s_%s.log.gz", group, dhList[0].Date)
 
-		if err := aws.UploadToS3(UPLOAD_BUCKET, fmt.Sprintf("%s/%s/%s", UPLOAD_PATH, UPLOAD_PATH_PREFIX, fileName), file); err != nil {
+		if err := aws.UploadToS3(UPLOAD_BUCKET, fmt.Sprintf("%s/%s/%s/%s", UPLOAD_PATH, UPLOAD_PATH_PREFIX, group, fileName), file); err != nil {
 			fmt.Printf("warning - Unable to upload file %s (%s)\n", fileName, err)
 			continue
 		}
